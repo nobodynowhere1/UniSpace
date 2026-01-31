@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}{{ product.title }} | UniSpace{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>{{ product.title }}</h1>
+        <div class="meta">{{ product.category }} • ${{ product.price }} • {{ product.get_status_display }}</div>
+    </div>
+    {% if user.is_authenticated and product.author == user %}
+        <div class="inline-actions">
+            <a class="btn" href="{% url 'marketplace:update' product.pk %}">Edit</a>
+            <a class="btn danger" href="{% url 'marketplace:delete' product.pk %}">Delete</a>
+        </div>
+    {% endif %}
+</div>
+
+<article class="card">
+    {% if product.image %}
+        <div class="post-hero">
+            <img src="{{ product.image.url }}" alt="{{ product.title }}">
+        </div>
+    {% endif %}
+    <p>{{ product.description|linebreaks }}</p>
+    <p class="meta">Posted {{ product.created_at|date:"M d, Y" }} by {{ product.author }}</p>
+</article>
+{% endblock %}

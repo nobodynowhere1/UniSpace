@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Announcements | UniSpace{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Announcements</h1>
+    {% if user.is_staff %}
+        <a class="btn primary" href="{% url 'announcements:create' %}">New Announcement</a>
+    {% endif %}
+</div>
+{% if announcements %}
+    <div class="news-grid">
+        {% for announcement in announcements %}
+            <article class="news-card">
+                {% if announcement.cover %}
+                    <a class="news-cover" href="{% url 'announcements:detail' announcement.pk %}">
+                        <img src="{{ announcement.cover.url }}" alt="{{ announcement.title }}">
+                    </a>
+                {% else %}
+                    <div class="news-cover placeholder"></div>
+                {% endif %}
+                <div class="news-body">
+                    <h2><a href="{% url 'announcements:detail' announcement.pk %}">{{ announcement.title }}</a></h2>
+                    <p>{{ announcement.content|truncatewords:30 }}</p>
+                    <div class="meta">Posted {{ announcement.created_at|date:"M d, Y" }} by {{ announcement.author }}</div>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+    {% include 'partials/pagination.html' with page_obj=page_obj %}
+{% else %}
+    <p>No announcements yet.</p>
+{% endif %}
+{% endblock %}

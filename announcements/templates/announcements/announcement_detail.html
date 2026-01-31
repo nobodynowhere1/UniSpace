@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}{{ announcement.title }} | UniSpace{% endblock %}
+{% block content %}
+<article class="news-detail">
+    {% if announcement.cover %}
+        <div class="news-hero">
+            <img src="{{ announcement.cover.url }}" alt="{{ announcement.title }}">
+        </div>
+    {% endif %}
+    <div class="news-detail-body card">
+        <h1>{{ announcement.title }}</h1>
+        <div class="meta">Posted {{ announcement.created_at|date:"M d, Y" }} by {{ announcement.author }}</div>
+        {% if user.is_staff %}
+            <div class="inline-actions">
+                <a class="btn" href="{% url 'announcements:update' announcement.pk %}">Edit</a>
+                <a class="btn danger" href="{% url 'announcements:delete' announcement.pk %}">Delete</a>
+            </div>
+        {% endif %}
+        <div class="news-content">
+            {{ announcement.content|linebreaks }}
+        </div>
+    </div>
+</article>
+{% endblock %}

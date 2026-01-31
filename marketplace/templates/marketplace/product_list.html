@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Buy & Sell | UniSpace{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Buy &amp; Sell</h1>
+    {% if user.is_authenticated %}
+        <a class="btn primary" href="{% url 'marketplace:create' %}">New Product</a>
+    {% endif %}
+</div>
+
+{% if products %}
+    <ul class="item-list">
+        {% for product in products %}
+            <li>
+                <div class="post-card">
+                    <div class="post-main">
+                        <a href="{% url 'marketplace:detail' product.pk %}">{{ product.title }}</a>
+                        <div class="meta">{{ product.category }} • ${{ product.price }} • {{ product.get_status_display }}</div>
+                    </div>
+                    {% if product.image %}
+                        <a class="post-thumb" href="{% url 'marketplace:detail' product.pk %}">
+                            <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                        </a>
+                    {% endif %}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    {% include 'partials/pagination.html' with page_obj=page_obj %}
+{% else %}
+    <p>No products listed yet.</p>
+{% endif %}
+{% endblock %}

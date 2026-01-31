@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Login | UniSpace{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Login</h1>
+</div>
+<form method="post" class="form-card">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn primary">Login</button>
+</form>
+{% endblock %}

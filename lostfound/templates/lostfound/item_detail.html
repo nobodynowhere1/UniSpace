@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}{{ item.title }} | UniSpace{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>{{ item.title }}</h1>
+        <div class="meta">{{ item.get_status_display }} • {{ item.location }}</div>
+    </div>
+    {% if user.is_authenticated and item.author == user %}
+        <div class="inline-actions">
+            <a class="btn" href="{% url 'lostfound:update' item.pk %}">Edit</a>
+            <a class="btn danger" href="{% url 'lostfound:delete' item.pk %}">Delete</a>
+        </div>
+    {% endif %}
+</div>
+
+<article class="card">
+    {% if item.image %}
+        <div class="post-hero">
+            <img src="{{ item.image.url }}" alt="{{ item.title }}">
+        </div>
+    {% endif %}
+    <p>{{ item.description|linebreaks }}</p>
+    <p class="meta">Posted {{ item.created_at|date:"M d, Y" }} by {{ item.author }}</p>
+</article>
+{% endblock %}

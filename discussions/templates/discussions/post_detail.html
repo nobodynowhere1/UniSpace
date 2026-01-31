@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block title %}{{ post.title }} | UniSpace{% endblock %}
+{% block content %}
+<div class="layout">
+    <section class="feed">
+        <article class="post-card detail">
+            <div class="post-main">
+                <div class="post-header">
+                    <span class="badge">{{ post.get_category_display }}</span>
+                    <span class="meta">{{ post.created_at|date:"M d, Y" }} • {{ post.author }}</span>
+                </div>
+                <h1>{{ post.title }}</h1>
+                {% if post.image %}
+                    <div class="post-hero">
+                        <img src="{{ post.image.url }}" alt="{{ post.title }}">
+                    </div>
+                {% endif %}
+                <div class="post-content">
+                    {{ post.content|linebreaks }}
+                </div>
+                <div class="post-footer">
+                    <span class="meta">{{ post.comments.count }} comments</span>
+                </div>
+            </div>
+            {% if user.is_authenticated and post.author == user %}
+                <div class="inline-actions">
+                    <a class="btn" href="{% url 'discussions:update' post.pk %}">Edit</a>
+                    <a class="btn danger" href="{% url 'discussions:delete' post.pk %}">Delete</a>
+                </div>
+            {% endif %}
+        </article>
+
+        <section class="card">
+            <h2>Comments ({{ post.comments.count }})</h2>
+            {% for comment in post.comments.all %}
+                <div class="comment">
+                    <div class="meta">{{ comment.author }} • {{ comment.created_at|date:"M d, Y H:i" }}</div>
+                    <p>{{ comment.content|linebreaks }}</p>
+                </div>
+            {% empty %}
+                <p>No comments yet.</p>
+            {% endfor %}
+        </section>
+
+        <section class="card">
+            <h2>Add a comment</h2>
+            {% if user.is_authenticated %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ comment_form.as_p }}
+                    <button class="btn primary" type="submit">Post Comment</button>
+                </form>
+            {% else %}
+                <p><a href="{% url 'accounts:login' %}">Login</a> to comment.</p>
+            {% endif %}
+        </section>
+    </section>
+
+    <aside class="sidebar">
+        <div class="card">
+            <h3>About this thread</h3>
+            <p class="meta">Category: {{ post.get_category_display }}</p>
+            <p class="meta">Author: {{ post.author }}</p>
+        </div>
+        <div class="card">
+            <h3>Posting guidelines</h3>
+            <p class="meta">Be clear, be kind, and add helpful details.</p>
+        </div>
+    </aside>
+</div>
+{% endblock %}

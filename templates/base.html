@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}UniSpace{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container nav">
+            <div class="nav-left">
+                <a class="logo" href="{% url 'announcements:list' %}">UniSpace</a>
+                <nav class="nav-links">
+                    <a class="{% if request.resolver_match.app_name == 'announcements' %}active{% endif %}" href="{% url 'announcements:list' %}">Announcements</a>
+                    <a class="{% if request.resolver_match.app_name == 'discussions' %}active{% endif %}" href="{% url 'discussions:list' %}">Discussions</a>
+                    <a class="{% if request.resolver_match.app_name == 'marketplace' %}active{% endif %}" href="{% url 'marketplace:list' %}">Buy &amp; Sell</a>
+                    <a class="{% if request.resolver_match.app_name == 'lostfound' %}active{% endif %}" href="{% url 'lostfound:list' %}">Lost &amp; Found</a>
+                </nav>
+            </div>
+            <div class="nav-right">
+                <div class="avatar-menu">
+                    <button class="avatar-button" type="button" aria-haspopup="true">
+                        {% if user.is_authenticated and user.profile.avatar %}
+                            <img class="avatar" src="{{ user.profile.avatar.url }}" alt="{{ user.username }}">
+                        {% elif user.is_authenticated %}
+                            <span class="avatar avatar-placeholder">{{ user.username|first|upper }}</span>
+                        {% else %}
+                            <span class="avatar avatar-placeholder">?</span>
+                        {% endif %}
+                    </button>
+                    <div class="dropdown">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'accounts:profile' %}">Profile</a>
+                            <form action="{% url 'accounts:logout' %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="link-button">Logout</button>
+                            </form>
+                        {% else %}
+                            <a href="{% url 'accounts:login' %}">Login</a>
+                            <a href="{% url 'accounts:register' %}">Register</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container main">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Discussion | UniSpace{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>{% if form.instance.pk %}Edit Discussion{% else %}New Discussion{% endif %}</h1>
+</div>
+<form method="post" class="form-card" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn primary">Save</button>
+    <a class="btn" href="{% url 'discussions:list' %}">Cancel</a>
+</form>
+{% endblock %}
