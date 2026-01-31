@@ -6,8 +6,8 @@
         <article class="post-card detail">
             <div class="post-main">
                 <div class="post-header">
-                    <span class="badge">{{ post.get_category_display }}</span>
-                    <span class="meta">{{ post.created_at|date:"M d, Y" }} • {{ post.author }}</span>
+                    <span class="badge {{ post.category }}">{{ post.get_category_display }}</span>
+                    <span class="meta">{{ post.created_at|date:"M d, Y" }} &middot; {{ post.author }}</span>
                 </div>
                 <h1>{{ post.title }}</h1>
                 {% if post.image %}
@@ -34,7 +34,7 @@
             <h2>Comments ({{ post.comments.count }})</h2>
             {% for comment in post.comments.all %}
                 <div class="comment">
-                    <div class="meta">{{ comment.author }} • {{ comment.created_at|date:"M d, Y H:i" }}</div>
+                    <div class="meta">{{ comment.author }} &middot; {{ comment.created_at|date:"M d, Y H:i" }}</div>
                     <p>{{ comment.content|linebreaks }}</p>
                 </div>
             {% empty %}

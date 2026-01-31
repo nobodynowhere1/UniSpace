@@ -8,15 +8,15 @@
     {% endif %}
 </div>
 
-<div class="layout">
+<div class="layout layout-premium">
     <section class="feed">
         {% if posts %}
             {% for post in posts %}
                 <article class="post-card">
                     <div class="post-main">
                         <div class="post-header">
-                            <span class="badge">{{ post.get_category_display }}</span>
-                            <span class="meta">{{ post.created_at|date:"M d, Y" }} • {{ post.author }}</span>
+                            <span class="badge {{ post.category }}">{{ post.get_category_display }}</span>
+                            <span class="meta">{{ post.created_at|date:"M d, Y" }} &middot; {{ post.author }}</span>
                         </div>
                         <h2><a href="{% url 'discussions:detail' post.pk %}">{{ post.title }}</a></h2>
                         <p>{{ post.content|truncatewords:40 }}</p>

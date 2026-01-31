@@ -9,23 +9,24 @@
 </div>
 
 {% if items %}
-    <ul class="item-list">
+    <div class="card-grid">
         {% for item in items %}
-            <li>
-                <div class="post-card">
-                    <div class="post-main">
-                        <a href="{% url 'lostfound:detail' item.pk %}">{{ item.title }}</a>
-                        <div class="meta">{{ item.get_status_display }} • {{ item.location }} • {{ item.created_at|date:"M d, Y" }}</div>
+            <article class="post-card card-grid-item">
+                <div class="post-main">
+                    <div class="post-header">
+                        <span class="badge neutral">{{ item.get_status_display }}</span>
+                        <span class="meta">{{ item.location }} &middot; {{ item.created_at|date:"M d, Y" }}</span>
                     </div>
-                    {% if item.image %}
-                        <a class="post-thumb" href="{% url 'lostfound:detail' item.pk %}">
-                            <img src="{{ item.image.url }}" alt="{{ item.title }}">
-                        </a>
-                    {% endif %}
+                    <h2><a href="{% url 'lostfound:detail' item.pk %}">{{ item.title }}</a></h2>
                 </div>
-            </li>
+                {% if item.image %}
+                    <a class="post-thumb" href="{% url 'lostfound:detail' item.pk %}">
+                        <img src="{{ item.image.url }}" alt="{{ item.title }}">
+                    </a>
+                {% endif %}
+            </article>
         {% endfor %}
-    </ul>
+    </div>
     {% include 'partials/pagination.html' with page_obj=page_obj %}
 {% else %}
     <p>No items yet.</p>

@@ -9,23 +9,24 @@
 </div>
 
 {% if products %}
-    <ul class="item-list">
+    <div class="card-grid">
         {% for product in products %}
-            <li>
-                <div class="post-card">
-                    <div class="post-main">
-                        <a href="{% url 'marketplace:detail' product.pk %}">{{ product.title }}</a>
-                        <div class="meta">{{ product.category }} • ${{ product.price }} • {{ product.get_status_display }}</div>
+            <article class="post-card card-grid-item">
+                <div class="post-main">
+                    <div class="post-header">
+                        <span class="badge neutral">{{ product.category }}</span>
+                        <span class="meta">${{ product.price }} &middot; {{ product.get_status_display }}</span>
                     </div>
-                    {% if product.image %}
-                        <a class="post-thumb" href="{% url 'marketplace:detail' product.pk %}">
-                            <img src="{{ product.image.url }}" alt="{{ product.title }}">
-                        </a>
-                    {% endif %}
+                    <h2><a href="{% url 'marketplace:detail' product.pk %}">{{ product.title }}</a></h2>
                 </div>
-            </li>
+                {% if product.image %}
+                    <a class="post-thumb" href="{% url 'marketplace:detail' product.pk %}">
+                        <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                    </a>
+                {% endif %}
+            </article>
         {% endfor %}
-    </ul>
+    </div>
     {% include 'partials/pagination.html' with page_obj=page_obj %}
 {% else %}
     <p>No products listed yet.</p>

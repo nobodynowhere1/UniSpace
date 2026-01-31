@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
 {% block title %}Announcements | UniSpace{% endblock %}
 {% block content %}
-<div class="page-header">
-    <h1>Announcements</h1>
+<section class="hero">
+    <div>
+        <div class="eyebrow">Campus updates</div>
+        <h1>Announcements</h1>
+        <p>Fresh updates, events, and important university news in one place.</p>
+    </div>
     {% if user.is_staff %}
         <a class="btn primary" href="{% url 'announcements:create' %}">New Announcement</a>
     {% endif %}
-</div>
+</section>
 {% if announcements %}
     <div class="news-grid">
         {% for announcement in announcements %}
