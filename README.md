@@ -55,7 +55,3 @@ python manage.py runserver
 - Static CSS: `static/styles.css`
 - Uploaded media: `media/`
 
-## Defense
-- Why Django templates (SSR) for MVP: fast to build, minimal frontend complexity, easy to deploy, and perfect for учебный проект with server-side rendering.
-- Why different access levels (staff vs users): announcements are official communications and should be controlled by staff, while student-generated content remains open to authenticated users.
-- Why backend checks matter: UI hiding is not security; server-side permission checks prevent unauthorized edits/deletes and protect data integrity.
